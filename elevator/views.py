@@ -9,6 +9,7 @@ from django.core.cache import cache
 class ElevatorViewSet(viewsets.ViewSet):
     queryset = Elevator.objects.all()
     serializer_class = ElevatorSerializer
+
     #This api initialize elevator system with given number of elevators
 
     def create(self, request):
@@ -20,6 +21,8 @@ class ElevatorViewSet(viewsets.ViewSet):
 
         serializer = ElevatorSerializer(elevators, many=True)
         return Response(serializer.data, status=201)
+
+    #This api fetch if the elevator is moving up or down currently
 
     @action(detail=True, methods=['get'])
     def moving_direction(self, request, pk=None):
@@ -35,6 +38,8 @@ class ElevatorViewSet(viewsets.ViewSet):
 
         return Response({'direction': direction})
 
+    #This api mark a elevator as not working or in maintenance
+
     @action(detail=True, methods=['post'])
     def mark_maintenance(self, request, pk=None):
         queryset = self.get_queryset()
@@ -48,6 +53,7 @@ class ElevatorViewSet(viewsets.ViewSet):
         serializer = ElevatorSerializer(elevator)
         return Response(serializer.data)
 
+    #This api open/close the door.
     @action(detail=True, methods=['post'])
     def door_action(self, request, pk=None):
         queryset = self.get_queryset()
@@ -65,6 +71,8 @@ class ElevatorViewSet(viewsets.ViewSet):
 
         serializer = ElevatorSerializer(elevator)
         return Response(serializer.data)
+
+    #This api fetch the next destination floor for a given elevator
 
     @action(detail=True, methods=['get'])
     def next_destination(self, request, pk=None):
@@ -88,6 +96,8 @@ class ElevatorViewSet(viewsets.ViewSet):
             next_floor = None
 
         return Response({'next_destination_floor': next_floor})
+
+    #This is an additional which can be used to mark current floor when lift is stopped
 
     @action(detail=True, methods=['post'])
     def set_current_floor(self, request, pk=None):
@@ -125,6 +135,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         cache.set(cache_key, serializer.data, timeout=3600)
         return Response(serializer.data)
+
    #this api creates a request for a given elevator with a given floor no.
 
     def create(self, request):
