@@ -73,4 +73,4 @@ The project relies on the following dependencies, which are listed in the `requi
 - Django
 - djangorestframework
 - django-redis (optional, if using caching)
-- psycopg2 (optional, if using PostgreSQL)
+- psycopg2 (optional, if using PostgreSQL).
